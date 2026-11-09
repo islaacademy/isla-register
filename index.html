@@ -153,7 +153,7 @@ nav.tabs button.on{color:var(--brand)}
       <h1>ISLA Register</h1>
       <p id="subtitle">Attendance</p>
     </div>
-    <div class="sync" id="sync"><i></i><span>loading‚Ä¶</span></div>
+    <div class="sync" id="sync"><i></i><span>loading…</span></div>
   </header>
   <div id="notice" class="notice hidden"></div>
 
@@ -162,9 +162,9 @@ nav.tabs button.on{color:var(--brand)}
     <div class="seg"><button data-cm="month" class="on">Month</button><button data-cm="year">Year</button></div>
     <div id="cal-month">
       <div class="calhead">
-        <button class="iconbtn" id="m-prev" aria-label="Previous month">‚Äπ</button>
+        <button class="iconbtn" id="m-prev" aria-label="Previous month">‹</button>
         <h2 id="m-title"></h2>
-        <button class="iconbtn" id="m-next" aria-label="Next month">‚Ä∫</button>
+        <button class="iconbtn" id="m-next" aria-label="Next month">›</button>
       </div>
       <div class="card">
         <div class="dow"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
@@ -177,9 +177,9 @@ nav.tabs button.on{color:var(--brand)}
     </div>
     <div id="cal-year" class="hidden">
       <div class="calhead">
-        <button class="iconbtn" id="y-prev" aria-label="Previous year">‚Äπ</button>
+        <button class="iconbtn" id="y-prev" aria-label="Previous year">‹</button>
         <h2 id="y-title"></h2>
-        <button class="iconbtn" id="y-next" aria-label="Next year">‚Ä∫</button>
+        <button class="iconbtn" id="y-next" aria-label="Next year">›</button>
       </div>
       <div class="year" id="y-grid"></div>
     </div>
@@ -188,9 +188,9 @@ nav.tabs button.on{color:var(--brand)}
   <!-- DAY -->
   <section id="v-day" class="hidden">
     <div class="dayhead">
-      <button class="iconbtn" id="d-prev" aria-label="Previous day">‚Äπ</button>
+      <button class="iconbtn" id="d-prev" aria-label="Previous day">‹</button>
       <div class="d"><b id="d-title"></b><span id="d-sub"></span></div>
-      <button class="iconbtn" id="d-next" aria-label="Next day">‚Ä∫</button>
+      <button class="iconbtn" id="d-next" aria-label="Next day">›</button>
     </div>
     <div class="summary">
       <div class="stat"><b id="s-total">0</b><span>Enrolled</span></div>
@@ -211,9 +211,9 @@ nav.tabs button.on{color:var(--brand)}
   <!-- OVERVIEW -->
   <section id="v-stats" class="hidden">
     <div class="calhead">
-      <button class="iconbtn" id="o-prev" aria-label="Previous month">‚Äπ</button>
+      <button class="iconbtn" id="o-prev" aria-label="Previous month">‹</button>
       <h2 id="o-title"></h2>
-      <button class="iconbtn" id="o-next" aria-label="Next month">‚Ä∫</button>
+      <button class="iconbtn" id="o-next" aria-label="Next month">›</button>
     </div>
     <p style="margin:-4px 0 14px;color:var(--muted);font-size:14px">Attendance per child, across the days this month you took the register.</p>
     <div id="o-groups"></div>
@@ -246,9 +246,9 @@ const db = getFirestore(fbApp);
 (function(){
 "use strict";
 const GROUPS=[
-  {id:"outdoor",name:"Outdoor Learning / Sports",icon:"üåø",color:"var(--outdoor)",bg:"var(--outdoor-bg)"},
-  {id:"academics",name:"Academics",icon:"üìö",color:"var(--academics)",bg:"var(--academics-bg)"},
-  {id:"explorers",name:"Little Explorers",icon:"üß≠",color:"var(--explorers)",bg:"var(--explorers-bg)"}
+  {id:"outdoor",name:"Outdoor Learning / Sports",icon:"🌿",color:"var(--outdoor)",bg:"var(--outdoor-bg)"},
+  {id:"academics",name:"Academics",icon:"📚",color:"var(--academics)",bg:"var(--academics-bg)"},
+  {id:"explorers",name:"Little Explorers",icon:"🧭",color:"var(--explorers)",bg:"var(--explorers-bg)"}
 ];
 const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -301,7 +301,7 @@ function writeDoc(path,data){
   const q=queues[path]||(queues[path]={running:false,next:null});
   q.next=data;
   if(q.running) return;
-  setSync("busy","saving‚Ä¶");
+  setSync("busy","saving…");
   (async function run(){
     q.running=true;
     while(q.next){
@@ -416,7 +416,7 @@ function t0(){return new Date()}
 function renderDay(){
   const d=parse(curDay);
   $("d-title").textContent=DAYS[d.getDay()]+" "+d.getDate()+" "+MONTHS[d.getMonth()];
-  $("d-sub").textContent=(curDay===todayKey()?"Today ¬∑ ":"")+d.getFullYear();
+  $("d-sub").textContent=(curDay===todayKey()?"Today · ":"")+d.getFullYear();
   const p=attendance[curDay]||{};
   const kids=allKids(); const nin=kids.filter(c=>p[c.id]).length;
   $("s-total").textContent=kids.length;$("s-in").textContent=nin;$("s-out").textContent=kids.length-nin;
@@ -425,13 +425,13 @@ function renderDay(){
     const list=roster[g.id]; const n=list.filter(c=>p[c.id]).length;
     const pct=list.length?Math.round(n/list.length*100):0;
     h+='<div class="group'+(closed[g.id]?" closed":"")+'">';
-    h+='<button class="ghead" data-toggle="'+g.id+'"><span class="gicon" style="background:'+g.color+'">'+g.icon+'</span><span class="gname">'+esc(g.name)+'</span><span class="gcount" style="background:'+g.bg+';color:'+g.color+'">'+n+' / '+list.length+'</span><span class="chev">‚ñæ</span></button>';
+    h+='<button class="ghead" data-toggle="'+g.id+'"><span class="gicon" style="background:'+g.color+'">'+g.icon+'</span><span class="gname">'+esc(g.name)+'</span><span class="gcount" style="background:'+g.bg+';color:'+g.color+'">'+n+' / '+list.length+'</span><span class="chev">▾</span></button>';
     h+='<div class="bar"><i style="width:'+pct+'%;background:'+g.color+'"></i></div>';
     h+='<div class="gbody">';
     if(!list.length){
       h+='<div class="empty-g">No children in this group yet. <button data-goto="roster">Add names</button></div>';
     }else{
-      if(canWrite) h+='<div class="gtools"><button data-all="'+g.id+'">‚úì All present</button><button data-none="'+g.id+'">Clear all</button></div>';
+      if(canWrite) h+='<div class="gtools"><button data-all="'+g.id+'">✓ All present</button><button data-none="'+g.id+'">Clear all</button></div>';
       list.forEach((c,i)=>{
         const on=!!p[c.id];
         h+='<button class="kid'+(on?" in":"")+'" data-kid="'+c.id+'"'+(canWrite?"":" disabled")+'>';
@@ -457,7 +457,7 @@ function renderRoster(){
     list.forEach((c,i)=>{
       h+='<div class="rrow"><span class="kid" style="padding:0;border:0;min-height:0;width:auto"><span class="av">'+(i+1)+'</span></span>';
       h+='<input value="'+esc(c.name)+'" data-rename="'+g.id+'|'+c.id+'" '+(canWrite?"":"disabled")+' aria-label="Name">';
-      if(canWrite) h+='<button class="del" data-del="'+g.id+'|'+c.id+'" aria-label="Delete">‚úï</button>';
+      if(canWrite) h+='<button class="del" data-del="'+g.id+'|'+c.id+'" aria-label="Delete">✕</button>';
       h+='</div>';
     });
     h+='</div>';
@@ -573,7 +573,7 @@ render();
 
 let rosterSeeded=false, attSynced=false;
 function initSync(){
-  setSync("busy","connecting‚Ä¶");
+  setSync("busy","connecting…");
   onSnapshot(doc(db,"config/roster"),snap=>{
     if(snap.exists()){
       const d=snap.data();
@@ -584,7 +584,7 @@ function initSync(){
       setDoc(doc(db,"config/roster"),{groups:roster,updated:Date.now()}).catch(e=>console.error(e));
     }
     mode="db"; setSync("ok","synced"); render();
-  },e=>{console.error(e); mode="local"; setSync("off","offline ‚Äî saved on this phone"); render();});
+  },e=>{console.error(e); mode="local"; setSync("off","offline — saved on this phone"); render();});
 
   onSnapshot(collection(db,"attendance"),snap=>{
     snap.docChanges().forEach(ch=>{
@@ -596,7 +596,7 @@ function initSync(){
   },e=>console.error(e));
 }
 (function boot(){
-  mode="loading"; setSync("busy","connecting‚Ä¶"); initSync();
+  mode="loading"; setSync("busy","connecting…"); initSync();
 })();
 function download(){
   const data=JSON.stringify({app:"isla-register",version:1,exported:new Date().toISOString(),roster:roster,attendance:attendance},null,1);
