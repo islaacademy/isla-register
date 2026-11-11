@@ -107,7 +107,7 @@ nav.tabs button.on{color:var(--brand)}
 .kid.in .nm{color:var(--ink)}
 .kid:not(.in) .nm{color:#4b5563}
 .empty-g{padding:16px 14px;color:var(--muted);font-size:14px}
-.empty-g button{color:var(--brand);font-weight:700;text-decoration:underline}
+.empty-g button{color:var(--brand);font-weight:700;text-decoration:underline}.subhead{padding:10px 14px 4px;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;background:#faf9f6;border-bottom:1px solid #f1eee7}
 
 /* roster */
 .rgroup{margin-bottom:16px}
@@ -250,7 +250,7 @@ const GROUPS=[
   {id:"academics",name:"Academics",icon:"📚",color:"var(--academics)",bg:"var(--academics-bg)"},
   {id:"explorers",name:"Little Explorers",icon:"🧭",color:"var(--explorers)",bg:"var(--explorers-bg)"}
 ];
-const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const SCHEDULE={outdoor:{0:"Groep 1 (1-22) - 11:00-13:00",22:"Groep 2 (23-43) - 09:00-11:00"},academics:{0:"Groep 1 (1-22) - 09:00-11:00",22:"Groep 2 (23-43) - 11:00-13:00"}};const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
@@ -432,7 +432,7 @@ function renderDay(){
       h+='<div class="empty-g">No children in this group yet. <button data-goto="roster">Add names</button></div>';
     }else{
       if(canWrite) h+='<div class="gtools"><button data-all="'+g.id+'">✓ All present</button><button data-none="'+g.id+'">Clear all</button></div>';
-      list.forEach((c,i)=>{
+      list.forEach((c,i)=>{if(SCHEDULE[g.id]&&SCHEDULE[g.id][i])h+='<div class="subhead">'+SCHEDULE[g.id][i]+'</div>';
         const on=!!p[c.id];
         h+='<button class="kid'+(on?" in":"")+'" data-kid="'+c.id+'"'+(canWrite?"":" disabled")+'>';
         h+='<span class="av" style="'+(on?"background:"+g.bg+";color:"+g.color:"")+'">'+(i+1)+'</span>';
@@ -454,7 +454,7 @@ function renderRoster(){
       h+='<div class="radd"><textarea placeholder="Child&#39;s name (or paste a list)" data-addin="'+g.id+'" rows="1"></textarea><button style="background:'+g.color+'" data-add="'+g.id+'">Add</button></div>';
     }
     if(!list.length) h+='<div class="empty-g">No names yet.</div>';
-    list.forEach((c,i)=>{
+          list.forEach((c,i)=>{if(SCHEDULE[g.id]&&SCHEDULE[g.id][i])h+='<div class="subhead">'+SCHEDULE[g.id][i]+'</div>';
       h+='<div class="rrow"><span class="kid" style="padding:0;border:0;min-height:0;width:auto"><span class="av">'+(i+1)+'</span></span>';
       h+='<input value="'+esc(c.name)+'" data-rename="'+g.id+'|'+c.id+'" '+(canWrite?"":"disabled")+' aria-label="Name">';
       if(canWrite) h+='<button class="del" data-del="'+g.id+'|'+c.id+'" aria-label="Delete">✕</button>';
